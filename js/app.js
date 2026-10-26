@@ -467,6 +467,7 @@ function resolveParams(params = {}) {
   const out = {};
   for (const [k, v] of Object.entries(params)) {
     if (v && typeof v === 'object') out[k] = v.item ? iname(v.item) : v.color ? cname(v.color) : String(v);
+    else if (k === 'color' && typeof v === 'string' && getColor(v)) out[k] = cname(v);
     else if (typeof v === 'string' && getItem(v)) out[k] = iname(v);
     else if (typeof v === 'string' && getColor(v)) out[k] = cname(v);
     else out[k] = v;
