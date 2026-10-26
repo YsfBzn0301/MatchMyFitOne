@@ -5,7 +5,7 @@ import {
   colorMatches, colorPairScore, itemMatches, scoreOutfit, suggestOutfit, itemFitsGender,
 } from './matching.js';
 import * as cam from './camera.js';
-import { startTour, tourDone } from './tour.js';
+import { startTour } from './tour.js';
 
 /* ---------- helpers ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -691,8 +691,6 @@ async function init() {
     const sp = $('#splash');
     sp.classList.add('out');
     setTimeout(() => sp.remove(), 700);
-    // First launch: show the guided tour once the splash is gone
-    if (!tourDone()) setTimeout(openTour, reduced.matches ? 100 : 750);
   }, wait);
 }
 
