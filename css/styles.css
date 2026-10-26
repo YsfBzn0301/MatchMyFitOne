@@ -247,11 +247,9 @@ main { padding: 4px 16px calc(110px + var(--sab)); }
 .figure-card { padding: 18px; background: radial-gradient(circle at 50% 0, color-mix(in srgb, var(--a1) 12%, var(--surface)), var(--surface) 70%); }
 .fig { position: relative; width: min(220px, 70%); aspect-ratio: 220 / 300; margin: 0 auto; }
 .fp { position: absolute; background: var(--c, transparent); display: grid; place-items: center; font-size: 1.9rem; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1), 0 8px 18px color-mix(in srgb, var(--c, #000) 35%, transparent); transition: background-color .5s, transform .4s var(--ease), opacity .35s; }
-.fp[data-key="outerwear"] { opacity: .92; } .fp[data-key="outerwear"] span { position: absolute; left: 7%; top: 12%; }
-.fp[data-key="bottom"] { align-content: end; padding-bottom: 14%; } .fp[data-key="top"], .fp[data-key="onepiece"] { z-index: 2; }
+.fp[data-key="top"], .fp[data-key="onepiece"] { z-index: 2; }
 .fp[data-key="shoesL"], .fp[data-key="shoesR"] { font-size: 1.3rem; } .fp[data-key="accessory"] { z-index: 3; font-size: 1.5rem; }
 .fp.empty { background: color-mix(in srgb, var(--surface-2) 70%, transparent); border: 2px dashed color-mix(in srgb, var(--muted) 45%, transparent); color: var(--muted); font-size: 1.3rem; box-shadow: none; }
-.fp.empty[data-key="outerwear"] { opacity: .5; z-index: 0; } .fp.empty[data-key="outerwear"] span { position: static; }
 .fp.gone { opacity: 0; transform: scale(.8); pointer-events: none; }
 .score-row { display: flex; align-items: center; gap: 18px; }
 .score-text { min-width: 0; }
@@ -347,3 +345,9 @@ main { padding: 4px 16px calc(110px + var(--sab)); }
 .tour-choice .gender-seg { margin-bottom: 4px; background: var(--surface-2); }
 .tour-choice-hint { font-size: .75rem; color: var(--muted); }
 .fig .fp { transition: background-color .5s, transform .4s var(--ease), opacity .35s, left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease), border-radius .55s var(--ease); }
+
+/* outfit figure: jacket panels + labels */
+.fp span { display: grid; justify-items: center; line-height: 1; }
+.fp small { margin-top: 6px; font-size: .62rem; font-weight: 600; letter-spacing: .02em; color: var(--muted); }
+.fp[data-key^="outer"] { font-size: 1.05rem; }
+.fp.empty[data-key="outerR"] { border-style: dashed; }

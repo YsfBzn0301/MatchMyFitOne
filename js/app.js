@@ -476,22 +476,24 @@ function initCamera() {
 let outfitReady = false;
 let lastRingScore = 0;
 // Figure geometry: [left, top, width, height, radius] in a 220x300 box
+// Figure geometry: [left, top, width, height, radius] in a 220x300 box.
+// Outerwear is drawn as two open-jacket panels beside the top, so nothing hides behind anything.
 const FIG = {
-  outerwear: [8, 14, 204, 146, 34], top: [52, 26, 116, 98, 26], bottom: [62, 112, 96, 124, 20],
-  onepiece: [52, 26, 116, 212, 30], shoesL: [58, 244, 48, 42, 18], shoesR: [114, 244, 48, 42, 18], accessory: [164, 156, 52, 52, 26],
+  outerL: [24, 30, 32, 118, 16], outerR: [164, 30, 32, 118, 16], top: [62, 26, 96, 100, 24], bottom: [66, 132, 88, 108, 18],
+  onepiece: [62, 26, 96, 214, 26], shoesL: [62, 250, 44, 38, 16], shoesR: [114, 250, 44, 38, 16], accessory: [168, 178, 44, 44, 22],
 };
 // Silhouette tweaks: broader shoulders for men, narrower waist / wider hips for women
 const FIG_BY = {
   all: FIG,
-  m: { ...FIG, outerwear: [4, 12, 212, 150, 30], top: [44, 24, 132, 100, 22], bottom: [64, 114, 92, 122, 16], onepiece: [44, 24, 132, 214, 24] },
-  w: { ...FIG, outerwear: [14, 14, 192, 146, 40], top: [60, 26, 100, 92, 30], bottom: [54, 108, 112, 128, 34], onepiece: [56, 26, 108, 212, 40] },
+  m: { ...FIG, outerL: [16, 28, 34, 122, 14], outerR: [170, 28, 34, 122, 14], top: [56, 24, 108, 102, 20], bottom: [68, 132, 84, 108, 14], onepiece: [56, 24, 108, 216, 22], accessory: [170, 180, 42, 42, 21] },
+  w: { ...FIG, outerL: [28, 30, 32, 112, 18], outerR: [160, 30, 32, 112, 18], top: [68, 28, 84, 94, 30], bottom: [60, 128, 100, 112, 30], onepiece: [64, 28, 92, 212, 36], accessory: [168, 176, 42, 42, 21] },
 };
 function buildFigure() {
   const f = $('#outfit-fig');
   const geo = FIG_BY[gender] || FIG_BY.all;
   f.dataset.gender = gender;
   const mk = (key, slot, g) => `<button type="button" class="fp" data-slot="${slot}" data-key="${key}" style="left:${g[0] / 2.2}%;top:${g[1] / 3}%;width:${g[2] / 2.2}%;height:${g[3] / 3}%;border-radius:${g[4]}px" aria-label="${esc(t('cat.' + slot))}"><span></span></button>`;
-  f.innerHTML = mk('outerwear', 'outerwear', geo.outerwear) + mk('bottom', 'bottom', geo.bottom) + mk('top', 'top', geo.top) + mk('onepiece', 'onepiece', geo.onepiece) +
+  f.innerHTML = mk('outerL', 'outerwear', geo.outerL) + mk('outerR', 'outerwear', geo.outerR) + mk('bottom', 'bottom', geo.bottom) + mk('top', 'top', geo.top) + mk('onepiece', 'onepiece', geo.onepiece) +
     mk('shoesL', 'shoes', geo.shoesL) + mk('shoesR', 'shoes', geo.shoesR) + mk('accessory', 'accessory', geo.accessory);
 }
 // Animate the silhouette to the new gender geometry without rebuilding it
@@ -512,8 +514,12 @@ function updateFigure() {
     const hide = (one && (slot === 'top' || slot === 'bottom')) || (!one && slot === 'onepiece' && !p);
     el.classList.toggle('gone', hide);
     el.classList.toggle('empty', !p);
-    const span = el.firstElementChild, icon = p ? getItem(p.itemId)?.icon || '' : '+';
-    if (span.textContent !== icon) { span.textContent = icon; if (p) pop(el); }
+    // Right jacket panel and right shoe stay plain; big empty pieces get a small label
+    const key = el.dataset.key, plain = key === 'outerR';
+    const label = !p && ['top', 'bottom', 'onepiece'].includes(key) ? `<small>${esc(t('cat.' + slot))}</small>` : '';
+    const html = plain ? '' : (p ? getItem(p.itemId)?.icon || '' : '+') + label;
+    const span = el.firstElementChild;
+    if (span.dataset.html !== html) { span.dataset.html = html; span.innerHTML = html; if (p) pop(el); }
     if (p) { el.style.setProperty('--c', hexOf(p.colorId)); el.classList.toggle('light', isLight(hexOf(p.colorId))); }
     else el.style.removeProperty('--c');
   });
