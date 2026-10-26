@@ -39,4 +39,60 @@ export default {
   'outfit.savedEmpty': 'No saved outfits yet.', 'outfit.saveDone': 'Outfit saved', 'outfit.deleted': 'Outfit deleted',
   'outfit.loaded': 'Outfit loaded', 'outfit.cleared': 'Outfit cleared', 'outfit.load': 'Load outfit',
   'outfit.pickItem': 'Choose a piece', 'outfit.pickColor': 'Choose a color', 'outfit.pickItemFirst': 'Choose a piece first',
+
+  // ---- colors ----
+  'color.black': 'Black', 'color.white': 'White', 'color.gray': 'Gray', 'color.charcoal': 'Charcoal',
+  'color.beige': 'Beige', 'color.cream': 'Cream', 'color.camel': 'Camel', 'color.brown': 'Brown',
+  'color.khaki': 'Khaki', 'color.navy': 'Navy', 'color.denim': 'Denim', 'color.olive': 'Olive',
+  'color.red': 'Red', 'color.burgundy': 'Burgundy', 'color.pink': 'Pink', 'color.blush': 'Blush',
+  'color.coral': 'Coral', 'color.orange': 'Orange', 'color.rust': 'Rust', 'color.mustard': 'Mustard',
+  'color.yellow': 'Yellow', 'color.green': 'Green', 'color.mint': 'Mint', 'color.emerald': 'Emerald',
+  'color.teal': 'Teal', 'color.lightblue': 'Light blue', 'color.blue': 'Blue', 'color.cobalt': 'Cobalt',
+  'color.purple': 'Purple', 'color.lavender': 'Lavender',
+
+  // ---- items ----
+  'item.tshirt': 'T-shirt', 'item.shirt': 'Shirt', 'item.blouse': 'Blouse', 'item.polo': 'Polo shirt',
+  'item.hoodie': 'Hoodie', 'item.sweater': 'Sweater', 'item.turtleneck': 'Turtleneck', 'item.tanktop': 'Tank top',
+  'item.jeans': 'Jeans', 'item.chinos': 'Chinos', 'item.suitpants': 'Suit pants', 'item.joggers': 'Joggers',
+  'item.shorts': 'Shorts', 'item.skirt': 'Skirt', 'item.cargo': 'Cargo pants', 'item.leggings': 'Leggings',
+  'item.dress': 'Dress', 'item.jumpsuit': 'Jumpsuit', 'item.suit': 'Suit', 'item.blazer': 'Blazer',
+  'item.leatherjacket': 'Leather jacket', 'item.denimjacket': 'Denim jacket', 'item.coat': 'Coat', 'item.parka': 'Parka',
+  'item.bomber': 'Bomber jacket', 'item.cardigan': 'Cardigan', 'item.sneakers': 'Sneakers', 'item.loafers': 'Loafers',
+  'item.oxfords': 'Oxfords', 'item.boots': 'Boots', 'item.chelsea': 'Chelsea boots', 'item.heels': 'Heels',
+  'item.sandals': 'Sandals', 'item.runners': 'Running shoes', 'item.belt': 'Belt', 'item.cap': 'Cap',
+  'item.scarf': 'Scarf', 'item.watch': 'Watch', 'item.tie': 'Tie', 'item.bag': 'Bag',
+
+  // ---- categories ----
+  'cat.top': 'Top', 'cat.bottom': 'Bottom', 'cat.onepiece': 'One-piece', 'cat.outerwear': 'Outerwear',
+  'cat.shoes': 'Shoes', 'cat.accessory': 'Accessory',
+
+  // ---- styles ----
+  'style.casual': 'Casual', 'style.business': 'Business', 'style.formal': 'Formal',
+  'style.sporty': 'Sporty', 'style.streetwear': 'Streetwear', 'style.elegant': 'Elegant',
+
+  // ---- color harmony ----
+  'harmony.monochrome': 'Monochrome', 'harmony.complementary': 'Complementary', 'harmony.analogous': 'Analogous',
+  'harmony.triadic': 'Triadic', 'harmony.neutral': 'Neutral', 'harmony.clash': 'Clash',
+
+  // ---- pairing reasons ----
+  'reason.styleMatch': 'Styles match', 'reason.styleClash': 'Styles clash', 'reason.formalityGap': 'Formality gap',
+  'reason.sameCategory': 'Same category', 'reason.onePieceConflict': 'Clashes with separates',
+  'reason.suitConflict': 'Clashes with a suit', 'reason.needsShirt': 'Needs a shirt underneath',
+  'reason.layering': 'Good layering', 'reason.smartCasual': 'Smart casual', 'reason.classicCombo': 'Classic combo',
+  'reason.badCombo': 'Poor combo', 'reason.seasonClash': 'Seasons clash', 'reason.versatile': 'Versatile',
+
+  // ---- outfit tips ----
+  'tip.addTop': 'Add a top to complete the outfit.',
+  'tip.addBottom': 'Add a bottom to complete the look.',
+  'tip.addShoes': 'Add shoes to complete the look.',
+  'tip.tooManyColors': "That's {count} accent colors. Try keeping it to three.",
+  'tip.addNeutral': 'Add a neutral like black, white or navy to calm things down.',
+  'tip.addAccent': 'Add a pop of color with an accessory or a piece.',
+  'tip.colorClash': '{a} and {b} clash in color. Try a different shade.',
+  'tip.formalityClash': '{a} and {b} are too different in formality.',
+  'tip.itemConflict': '{a} and {b} do not work well together.',
+  'tip.needsShirt': 'A {item} needs a shirt or blouse underneath.',
+  'tip.sameColor': 'Top and bottom in {color} look flat. Add some contrast.',
+  'tip.addAccessory': 'Add an accessory to finish the look.',
+  'tip.great': 'Great combination!',
 };

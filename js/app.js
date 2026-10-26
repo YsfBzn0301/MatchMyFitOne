@@ -606,6 +606,10 @@ async function init() {
     renderAll(true);
     const h = location.hash.slice(1);
     setView(VIEWS.includes(h) ? h : 'colors', { instant: true });
+    addEventListener('hashchange', () => {
+      const v = location.hash.slice(1);
+      if (VIEWS.includes(v)) setView(v);
+    });
     // lastRingScore is tracked in the ring itself
   } catch (e) { console.error(e); }
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
