@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect id="bg" width="512" height="512" rx="112" fill="#0f0f14"/>
+  <g id="art">
+    <!-- three translucent circles: color-harmony Venn -->
+    <circle cx="198" cy="268" r="108" fill="#ff6b6b" fill-opacity="0.85"/>
+    <circle cx="314" cy="268" r="108" fill="#f7b267" fill-opacity="0.85"/>
+    <circle cx="256" cy="340" r="108" fill="#4ecdc4" fill-opacity="0.85"/>
+    <!-- hanger outline -->
+    <g fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M256 176 V158 Q256 124 284 124 Q310 124 308 150"/>
+      <path d="M256 176 L146 248 Q140 254 150 256 H362 Q372 254 366 248 Z"/>
+    </g>
+  </g>
+</svg>
