@@ -5,6 +5,7 @@ import {
   colorMatches, colorPairScore, itemMatches, scoreOutfit, suggestOutfit,
 } from './matching.js';
 import * as cam from './camera.js';
+import { startTour, tourDone } from './tour.js';
 
 /* ---------- helpers ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -609,6 +610,7 @@ async function init() {
     await initI18n();
     initColors(); initClothing(); initCamera(); initOutfit();
     $('#lang-btn').addEventListener('click', openLangSheet);
+    $('#help-btn').addEventListener('click', openTour);
     $$('.tab').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
     addEventListener('langchange', () => {
       renderAll(false);
@@ -630,6 +632,14 @@ async function init() {
     const sp = $('#splash');
     sp.classList.add('out');
     setTimeout(() => sp.remove(), 700);
+    // First launch: show the guided tour once the splash is gone
+    if (!tourDone()) setTimeout(openTour, reduced.matches ? 100 : 750);
   }, wait);
+}
+
+function openTour() {
+  if (!sheet.hidden) closeSheet();
+  const back = currentView;
+  startTour({ setView, onEnd: () => setView(back) });
 }
 init();
