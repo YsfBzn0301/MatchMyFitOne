@@ -94,6 +94,7 @@ function render() {
     <h2 class="tour-title">${t(`tour.${s.id}.title`)}</h2>
     <p class="tour-text">${t(`tour.${s.id}.text`)}</p>
     ${how}
+    ${s.id === 'welcome' && opts.genderHTML ? `<div class="tour-choice"><div class="tour-choice-label">${t('tour.welcome.choose')}</div><div class="gender-slot">${opts.genderHTML()}</div><div class="tour-choice-hint">${t('tour.welcome.chooseHint')}</div></div>` : ''}
     <div class="tour-foot">
       <div class="tour-dots">${STEPS.map((_, i) => `<button type="button" class="tour-dot${i === idx ? ' on' : ''}" data-tour="dot" data-i="${i}" aria-label="${i + 1}"></button>`).join('')}</div>
       <div class="tour-btns">
