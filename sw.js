@@ -1,5 +1,5 @@
 // MatchMyFit service worker: precache app shell, runtime caching for same-origin GETs.
-const CACHE = 'mmf-v1';
+const CACHE = 'mmf-v2';
 const PRECACHE = [
   './',
   './index.html',

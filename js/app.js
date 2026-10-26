@@ -189,27 +189,38 @@ function setView(name, { instant = false } = {}) {
   const prev = currentView;
   currentView = name;
   if (prev === 'camera') stopCam();
-  const swap = () => {
-    $$('.view').forEach(s => { s.hidden = s.dataset.view !== name; });
-    $$('.tab').forEach((b, i) => {
-      const on = b.dataset.view === name;
-      b.classList.toggle('is-on', on);
-      if (on) { b.setAttribute('aria-current', 'page'); $('.tab-ind').style.transform = `translateX(${i * 100}%)`; } else b.removeAttribute('aria-current');
-    });
-    window.scrollTo(0, 0);
-  };
+  // Tabs update right away so the indicator glides with its CSS transition
+  $$('.tab').forEach((b, i) => {
+    const on = b.dataset.view === name;
+    b.classList.toggle('is-on', on);
+    if (on) { b.setAttribute('aria-current', 'page'); $('.tab-ind').style.transform = `translateX(${i * 100}%)`; } else b.removeAttribute('aria-current');
+  });
   try { history.replaceState(null, '', '#' + name); } catch {}
-  if (instant || !prev) { swap(); return; }
-  if (document.startViewTransition && !reduced.matches) {
-    root.dataset.vt = 'view';
-    const vt = document.startViewTransition(swap);
-    vt.finished.finally(() => { delete root.dataset.vt; });
-  } else {
-    swap();
-    const el = $('#view-' + name);
-    if (!reduced.matches && el.animate) el.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'ease-out' });
-  }
+
+  const views = $$('.view');
+  const next = $('#view-' + name);
+  const old = views.find(v => !v.hidden && v !== next);
+  views.forEach(v => v.getAnimations().forEach(a => a.cancel()));
+  const show = () => { views.forEach(v => { v.hidden = v !== next; }); window.scrollTo(0, 0); };
+  if (instant || !prev || !old || reduced.matches || !next.animate) { show(); return; }
+
+  // Slide out the old view, then slide in the new one (direction follows tab order)
+  const token = ++viewToken;
+  const dir = VIEWS.indexOf(name) > VIEWS.indexOf(prev) ? 1 : -1;
+  old.animate(
+    [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-dir * 28}px)` }],
+    { duration: 130, easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards' }
+  ).finished.then(() => {
+    if (token !== viewToken) return;
+    show();
+    old.getAnimations().forEach(a => a.cancel());
+    next.animate(
+      [{ opacity: 0, transform: `translateX(${dir * 28}px)` }, { opacity: 1, transform: 'none' }],
+      { duration: 340, easing: 'cubic-bezier(.16,1,.3,1)' }
+    );
+  }).catch(() => {});
 }
+let viewToken = 0;
 
 /* ================= COLORS ================= */
 const cs = { mode: 'single', sel: null, cmp: [] };
