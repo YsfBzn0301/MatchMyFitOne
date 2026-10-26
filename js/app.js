@@ -2,7 +2,7 @@
 import { t, initI18n, setLang, getLang, LANGS, applyTranslations } from './i18n.js';
 import {
   COLORS, STYLES, CATEGORIES, ITEMS, getColor, getItem, nearestColor,
-  colorMatches, colorPairScore, itemMatches, scoreOutfit, suggestOutfit,
+  colorMatches, colorPairScore, itemMatches, scoreOutfit, suggestOutfit, itemFitsGender,
 } from './matching.js';
 import * as cam from './camera.js';
 import { startTour, tourDone } from './tour.js';
@@ -152,9 +152,34 @@ function updateLangButton() {
   $('#lang-flag').textContent = l.flag;
   $('#lang-code').textContent = l.code.toUpperCase();
 }
+/* ---------- gender preference ---------- */
+const GENDER_OPTS = [['w', '👩'], ['m', '👨'], ['all', '👥']];
+let gender = store.get('mmf-gender', 'all');
+if (!GENDER_OPTS.some(o => o[0] === gender)) gender = 'all';
+const fits = i => itemFitsGender(i, gender);
+function genderSegHTML() {
+  return `<div class="gender-seg" role="radiogroup" aria-label="${esc(t('gender.title'))}">${GENDER_OPTS.map(([g, ico]) =>
+    `<button type="button" role="radio" aria-checked="${g === gender}" class="gender-opt${g === gender ? ' is-on' : ''}" data-gender="${g}"><span aria-hidden="true">${ico}</span>${esc(t('gender.' + g))}</button>`).join('')}</div>`;
+}
+function renderGenderSegs() {
+  $$('.gender-slot').forEach(el => { el.innerHTML = genderSegHTML(); });
+}
+function setGender(g) {
+  if (!GENDER_OPTS.some(o => o[0] === g) || g === gender) return;
+  gender = g;
+  store.set('mmf-gender', g);
+  renderGenderSegs();
+  renderItemGrid(true);
+  reshapeFigure();
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.gender-slot [data-gender], .sheet [data-gender]');
+  if (b) { setGender(b.dataset.gender); $$('.sheet .gender-opt').forEach(o => { const on = o.dataset.gender === gender; o.classList.toggle('is-on', on); o.setAttribute('aria-checked', on); }); }
+});
+
 function openLangSheet() {
-  openSheet(t('common.language'), body => {
-    body.innerHTML = `<div class="lang-list">${LANGS.map(l => `<button type="button" class="lang-opt${l.code === getLang() ? ' is-on' : ''}" data-lang="${l.code}"><span class="lang-flag">${l.flag}</span><span>${esc(l.label)}</span><i>${CHECK}</i></button>`).join('')}</div>`;
+  openSheet(t('settings.title'), body => {
+    body.innerHTML = `<div class="eyebrow pad0">${esc(t('gender.title'))}</div>${genderSegHTML()}<div class="eyebrow pad0 mt">${esc(t('common.language'))}</div><div class="lang-list">${LANGS.map(l => `<button type="button" class="lang-opt${l.code === getLang() ? ' is-on' : ''}" data-lang="${l.code}"><span class="lang-flag">${l.flag}</span><span>${esc(l.label)}</span><i>${CHECK}</i></button>`).join('')}</div>`;
     body.onclick = async e => {
       const b = e.target.closest('[data-lang]');
       if (!b) return;
@@ -295,7 +320,7 @@ function renderClothingFilters() {
   $('#style-filter').innerHTML = chipsHTML(STYLES, ks.style, s => t('style.' + s));
 }
 function renderItemGrid(animate) {
-  const list = ITEMS.filter(i => (ks.cat === 'all' || i.category === ks.cat) && (ks.style === 'all' || i.styles.includes(ks.style)));
+  const list = ITEMS.filter(i => fits(i) && (ks.cat === 'all' || i.category === ks.cat) && (ks.style === 'all' || i.styles.includes(ks.style)));
   const g = $('#item-grid');
   g.innerHTML = list.length ? list.map(i => `<button type="button" class="tile" data-item="${i.id}"><span class="tile-ico">${i.icon}</span><span class="tile-name">${esc(iname(i.id))}</span><span class="tile-sub">${esc(t('cat.' + i.category))}</span></button>`).join('')
     : `<div class="empty wide"><p>${esc(t('clothing.empty'))}</p></div>`;
@@ -304,7 +329,7 @@ function renderItemGrid(animate) {
 function openItemSheet(id) {
   const it = getItem(id);
   if (!it) return;
-  const m = itemMatches(id) || {};
+  const m = itemMatches(id, { gender }) || {};
   openSheet(iname(id), body => {
     const sec = (key, cls) => m[key]?.length ? `<div class="sec ${cls}"><h3>${esc(t('clothing.' + key))}</h3><div class="ichips">${m[key].slice(0, 14).map(itemChip).join('')}</div></div>` : '';
     body.innerHTML = `<div class="item-head"><div class="item-ico">${it.icon}</div><div><div class="muted">${esc(t('cat.' + it.category))}</div><div class="ichips mini">${it.styles.map(s => `<span class="tag">${esc(t('style.' + s))}</span>`).join('')}</div><div class="formality" title="${esc(t('clothing.formality'))}">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= it.formality ? 'on' : ''}"></i>`).join('')}<small>${esc(t('clothing.formality'))}</small></div></div></div>` +
@@ -398,7 +423,7 @@ function renderCamResult(animate) {
 function openAddSheet(colorId) {
   let cat = 'top';
   const draw = body => {
-    body.innerHTML = `<div class="sheet-color"><span class="mini-dot${isLight(hexOf(colorId)) ? ' light' : ''}" style="--c:${hexOf(colorId)}"></span>${esc(cname(colorId))}</div><div class="eyebrow">${esc(t('camera.chooseItem'))}</div><div class="chips">${CATEGORIES.map(c => `<button type="button" class="chip${c === cat ? ' is-on' : ''}" data-cat="${c}">${esc(t('cat.' + c))}</button>`).join('')}</div><div class="tile-grid compact">${ITEMS.filter(i => i.category === cat).map(i => `<button type="button" class="tile" data-item="${i.id}"><span class="tile-ico">${i.icon}</span><span class="tile-name">${esc(iname(i.id))}</span></button>`).join('')}</div>`;
+    body.innerHTML = `<div class="sheet-color"><span class="mini-dot${isLight(hexOf(colorId)) ? ' light' : ''}" style="--c:${hexOf(colorId)}"></span>${esc(cname(colorId))}</div><div class="eyebrow">${esc(t('camera.chooseItem'))}</div><div class="chips">${CATEGORIES.map(c => `<button type="button" class="chip${c === cat ? ' is-on' : ''}" data-cat="${c}">${esc(t('cat.' + c))}</button>`).join('')}</div><div class="tile-grid compact">${ITEMS.filter(i => i.category === cat && fits(i)).map(i => `<button type="button" class="tile" data-item="${i.id}"><span class="tile-ico">${i.icon}</span><span class="tile-name">${esc(iname(i.id))}</span></button>`).join('')}</div>`;
     stagger(body, '.tile');
   };
   openSheet(t('camera.addToOutfit'), body => {
@@ -455,11 +480,29 @@ const FIG = {
   outerwear: [8, 14, 204, 146, 34], top: [52, 26, 116, 98, 26], bottom: [62, 112, 96, 124, 20],
   onepiece: [52, 26, 116, 212, 30], shoesL: [58, 244, 48, 42, 18], shoesR: [114, 244, 48, 42, 18], accessory: [164, 156, 52, 52, 26],
 };
+// Silhouette tweaks: broader shoulders for men, narrower waist / wider hips for women
+const FIG_BY = {
+  all: FIG,
+  m: { ...FIG, outerwear: [4, 12, 212, 150, 30], top: [44, 24, 132, 100, 22], bottom: [64, 114, 92, 122, 16], onepiece: [44, 24, 132, 214, 24] },
+  w: { ...FIG, outerwear: [14, 14, 192, 146, 40], top: [60, 26, 100, 92, 30], bottom: [54, 108, 112, 128, 34], onepiece: [56, 26, 108, 212, 40] },
+};
 function buildFigure() {
   const f = $('#outfit-fig');
+  const geo = FIG_BY[gender] || FIG_BY.all;
+  f.dataset.gender = gender;
   const mk = (key, slot, g) => `<button type="button" class="fp" data-slot="${slot}" data-key="${key}" style="left:${g[0] / 2.2}%;top:${g[1] / 3}%;width:${g[2] / 2.2}%;height:${g[3] / 3}%;border-radius:${g[4]}px" aria-label="${esc(t('cat.' + slot))}"><span></span></button>`;
-  f.innerHTML = mk('outerwear', 'outerwear', FIG.outerwear) + mk('bottom', 'bottom', FIG.bottom) + mk('top', 'top', FIG.top) + mk('onepiece', 'onepiece', FIG.onepiece) +
-    mk('shoesL', 'shoes', FIG.shoesL) + mk('shoesR', 'shoes', FIG.shoesR) + mk('accessory', 'accessory', FIG.accessory);
+  f.innerHTML = mk('outerwear', 'outerwear', geo.outerwear) + mk('bottom', 'bottom', geo.bottom) + mk('top', 'top', geo.top) + mk('onepiece', 'onepiece', geo.onepiece) +
+    mk('shoesL', 'shoes', geo.shoesL) + mk('shoesR', 'shoes', geo.shoesR) + mk('accessory', 'accessory', geo.accessory);
+}
+// Animate the silhouette to the new gender geometry without rebuilding it
+function reshapeFigure() {
+  const geo = FIG_BY[gender] || FIG_BY.all;
+  const f = $('#outfit-fig');
+  f.dataset.gender = gender;
+  $$('.fp', f).forEach(el => {
+    const g = geo[el.dataset.key];
+    Object.assign(el.style, { left: g[0] / 2.2 + '%', top: g[1] / 3 + '%', width: g[2] / 2.2 + '%', height: g[3] / 3 + '%', borderRadius: g[4] + 'px' });
+  });
 }
 function updateFigure() {
   const s = outfit.slots;
@@ -515,7 +558,7 @@ function openSlotSheet(slot) {
   openSheet(t('cat.' + slot), body => {
     const draw = () => {
       const cur = outfit.slots[slot];
-      body.innerHTML = `<div class="eyebrow">${esc(t('outfit.pickItem'))}</div><div class="tile-grid compact">${ITEMS.filter(i => i.category === slot).map(i => `<button type="button" class="tile${cur?.itemId === i.id ? ' is-sel' : ''}" data-item="${i.id}"><span class="tile-ico">${i.icon}</span><span class="tile-name">${esc(iname(i.id))}</span></button>`).join('')}</div>` +
+      body.innerHTML = `<div class="eyebrow">${esc(t('outfit.pickItem'))}</div><div class="tile-grid compact">${ITEMS.filter(i => i.category === slot && fits(i)).map(i => `<button type="button" class="tile${cur?.itemId === i.id ? ' is-sel' : ''}" data-item="${i.id}"><span class="tile-ico">${i.icon}</span><span class="tile-name">${esc(iname(i.id))}</span></button>`).join('')}</div>` +
         `<div class="eyebrow mt">${esc(t('outfit.pickColor'))}</div><div class="sw-grid sheet-sw">${COLORS.map(c => swatch(c.id, cur?.colorId === c.id)).join('')}</div>` +
         `<div class="btn-row sticky">${cur ? `<button type="button" class="btn ghost" data-remove>${esc(t('common.remove'))}</button>` : ''}<button type="button" class="btn primary" data-close>${esc(t('common.done'))}</button></div>`;
     };
@@ -544,7 +587,7 @@ function applyPieces(ps) {
   updateOutfit();
 }
 function suggest(shuffle) {
-  const opts = { style: outfit.style || undefined };
+  const opts = { style: outfit.style || undefined, gender };
   if (shuffle) opts.seed = Math.floor(Math.random() * 1e9);
   else {
     const base = outfit.slots.top || outfit.slots.onepiece || outfit.slots.bottom;
@@ -596,7 +639,7 @@ function renderAll(animate) {
   updateLangButton();
   applyTheme(themePref());
   renderColorGrid(animate); renderColorResult(false);
-  renderClothingFilters(); renderItemGrid(animate);
+  renderGenderSegs(); renderClothingFilters(); renderItemGrid(animate);
   buildFigure(); updateStyleChips(); outfitReady = true; updateOutfit(); renderSaved(false);
   if (animate) stagger($('#slot-list'), '.slot-row');
   renderCamResult(false);
@@ -650,6 +693,6 @@ async function init() {
 function openTour() {
   if (!sheet.hidden) closeSheet();
   const back = currentView;
-  startTour({ setView, onEnd: () => setView(back) });
+  startTour({ setView, onEnd: () => setView(back), genderHTML: genderSegHTML });
 }
 init();

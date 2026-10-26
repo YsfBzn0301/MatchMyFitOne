@@ -44,22 +44,24 @@ export const HARMONY_TYPES = ['monochrome', 'complementary', 'analogous', 'triad
 export const ITEMS = [
   { id: 'tshirt', category: 'top', styles: ['casual', 'sporty', 'streetwear'], formality: 1, icon: '👕' },
   { id: 'shirt', category: 'top', styles: ['casual', 'business', 'formal', 'elegant'], formality: 3, icon: '👔' },
-  { id: 'blouse', category: 'top', styles: ['business', 'elegant', 'formal', 'casual'], formality: 3, icon: '👚' },
+  { id: 'blouse', gender: 'w', category: 'top', styles: ['business', 'elegant', 'formal', 'casual'], formality: 3, icon: '👚' },
   { id: 'polo', category: 'top', styles: ['casual', 'business', 'sporty'], formality: 2, icon: '🎽' },
   { id: 'hoodie', category: 'top', styles: ['casual', 'streetwear', 'sporty'], formality: 1, icon: '🧥' },
   { id: 'sweater', category: 'top', styles: ['casual', 'business', 'elegant'], formality: 2, icon: '🧶' },
   { id: 'turtleneck', category: 'top', styles: ['casual', 'business', 'elegant'], formality: 3, icon: '🧣' },
+  { id: 'henley', category: 'top', styles: ['casual', 'streetwear'], formality: 2, icon: '👕' },
   { id: 'tanktop', category: 'top', styles: ['casual', 'sporty', 'streetwear'], formality: 1, icon: '🩱' },
   { id: 'jeans', category: 'bottom', styles: ['casual', 'streetwear'], formality: 2, icon: '👖' },
   { id: 'chinos', category: 'bottom', styles: ['casual', 'business'], formality: 3, icon: '🪢' },
   { id: 'suitpants', category: 'bottom', styles: ['business', 'formal', 'elegant'], formality: 5, icon: '📏' },
   { id: 'joggers', category: 'bottom', styles: ['sporty', 'casual', 'streetwear'], formality: 1, icon: '🏃' },
   { id: 'shorts', category: 'bottom', styles: ['casual', 'sporty', 'streetwear'], formality: 1, icon: '🩳' },
-  { id: 'skirt', category: 'bottom', styles: ['casual', 'elegant', 'business'], formality: 3, icon: '💃' },
+  { id: 'skirt', gender: 'w', category: 'bottom', styles: ['casual', 'elegant', 'business'], formality: 3, icon: '💃' },
   { id: 'cargo', category: 'bottom', styles: ['streetwear', 'casual'], formality: 2, icon: '🎒' },
-  { id: 'leggings', category: 'bottom', styles: ['sporty', 'casual'], formality: 1, icon: '🧘' },
-  { id: 'dress', category: 'onepiece', styles: ['casual', 'elegant', 'formal'], formality: 3, icon: '👗' },
-  { id: 'jumpsuit', category: 'onepiece', styles: ['elegant', 'casual', 'streetwear'], formality: 3, icon: '🥼' },
+  { id: 'linenpants', category: 'bottom', styles: ['casual', 'elegant'], formality: 3, icon: '🏝️' },
+  { id: 'leggings', gender: 'w', category: 'bottom', styles: ['sporty', 'casual'], formality: 1, icon: '🧘' },
+  { id: 'dress', gender: 'w', category: 'onepiece', styles: ['casual', 'elegant', 'formal'], formality: 3, icon: '👗' },
+  { id: 'jumpsuit', gender: 'w', category: 'onepiece', styles: ['elegant', 'casual', 'streetwear'], formality: 3, icon: '🥼' },
   { id: 'suit', category: 'onepiece', styles: ['business', 'formal', 'elegant'], formality: 5, icon: '🕴️' },
   { id: 'blazer', category: 'outerwear', styles: ['business', 'formal', 'elegant', 'casual'], formality: 4, icon: '🤵' },
   { id: 'leatherjacket', category: 'outerwear', styles: ['streetwear', 'casual'], formality: 2, icon: '🏍️' },
@@ -67,22 +69,33 @@ export const ITEMS = [
   { id: 'coat', category: 'outerwear', styles: ['business', 'elegant', 'formal', 'casual'], formality: 4, icon: '🧥' },
   { id: 'parka', category: 'outerwear', styles: ['casual', 'sporty', 'streetwear'], formality: 2, icon: '❄️' },
   { id: 'bomber', category: 'outerwear', styles: ['streetwear', 'casual', 'sporty'], formality: 2, icon: '✈️' },
+  { id: 'vest', category: 'outerwear', styles: ['business', 'formal', 'elegant'], formality: 4, icon: '🎩' },
   { id: 'cardigan', category: 'outerwear', styles: ['casual', 'business', 'elegant'], formality: 3, icon: '🍂' },
   { id: 'sneakers', category: 'shoes', styles: ['casual', 'streetwear', 'sporty'], formality: 2, icon: '👟' },
   { id: 'loafers', category: 'shoes', styles: ['business', 'casual', 'elegant'], formality: 4, icon: '🥿' },
   { id: 'oxfords', category: 'shoes', styles: ['formal', 'business', 'elegant'], formality: 5, icon: '👞' },
   { id: 'boots', category: 'shoes', styles: ['casual', 'streetwear'], formality: 3, icon: '🥾' },
   { id: 'chelsea', category: 'shoes', styles: ['business', 'casual', 'elegant', 'streetwear'], formality: 4, icon: '🤠' },
-  { id: 'heels', category: 'shoes', styles: ['elegant', 'formal'], formality: 4, icon: '👠' },
+  { id: 'heels', gender: 'w', category: 'shoes', styles: ['elegant', 'formal'], formality: 4, icon: '👠' },
+  { id: 'ballerinas', gender: 'w', category: 'shoes', styles: ['casual', 'elegant', 'business'], formality: 3, icon: '🩰' },
   { id: 'sandals', category: 'shoes', styles: ['casual'], formality: 1, icon: '🩴' },
   { id: 'runners', category: 'shoes', styles: ['sporty'], formality: 1, icon: '🏅' },
   { id: 'belt', category: 'accessory', styles: ['business', 'casual', 'formal'], formality: 3, icon: '🔗' },
   { id: 'cap', category: 'accessory', styles: ['casual', 'sporty', 'streetwear'], formality: 1, icon: '🧢' },
   { id: 'scarf', category: 'accessory', styles: ['casual', 'elegant', 'business'], formality: 3, icon: '🧣' },
   { id: 'watch', category: 'accessory', styles: ['business', 'formal', 'elegant', 'casual', 'sporty'], formality: 3, icon: '⌚' },
-  { id: 'tie', category: 'accessory', styles: ['formal', 'business'], formality: 5, icon: '👔' },
-  { id: 'bag', category: 'accessory', styles: ['casual', 'business', 'elegant'], formality: 3, icon: '👜' },
+  { id: 'tie', gender: 'm', category: 'accessory', styles: ['formal', 'business'], formality: 5, icon: '👔' },
+  { id: 'bowtie', gender: 'm', category: 'accessory', styles: ['formal', 'elegant'], formality: 5, icon: '🎀' },
+  { id: 'bag', gender: 'w', category: 'accessory', styles: ['casual', 'business', 'elegant'], formality: 3, icon: '👜' },
 ];
+
+// Gender filter: 'all' shows everything, 'w'/'m' show matching plus unisex items
+export const GENDERS = ['all', 'w', 'm'];
+export function itemFitsGender(item, gender) {
+  const it = typeof item === 'string' ? ITEMS.find((i) => i.id === item) : item;
+  if (!it) return false;
+  return !gender || gender === 'all' || !it.gender || it.gender === gender;
+}
 
 /* ---------- Color conversion ---------- */
 
@@ -348,10 +361,25 @@ const RULE_LIST = [
   ['belt', 'shorts', 70, 'styleMatch'], ['belt', 'skirt', 70, 'styleMatch'], ['belt', 'jumpsuit', 70, 'styleMatch'],
   ['tie', 'suit', 92, 'classicCombo'], ['tie', 'oxfords', 85, 'classicCombo'], ['tie', 'blazer', 88, 'classicCombo'],
   ['tie', 'jeans', 40, 'formalityGap'], ['tie', 'shorts', 10, 'formalityGap'], ['tie', 'joggers', 10, 'formalityGap'], ['tie', 'sneakers', 30, 'formalityGap'],
+  ['bowtie', 'suit', 94, 'classicCombo'], ['bowtie', 'oxfords', 88, 'classicCombo'], ['bowtie', 'vest', 90, 'classicCombo'],
+  ['bowtie', 'jeans', 35, 'formalityGap'], ['bowtie', 'shorts', 10, 'formalityGap'], ['bowtie', 'joggers', 10, 'formalityGap'], ['bowtie', 'sneakers', 25, 'formalityGap'],
+  ['vest', 'shirt', 94, 'classicCombo'], ['vest', 'suitpants', 92, 'classicCombo'], ['vest', 'chinos', 85, 'smartCasual'],
+  ['vest', 'jeans', 70, 'smartCasual'], ['vest', 'tshirt', 55, 'formalityGap'], ['vest', 'hoodie', 20, 'formalityGap'],
+  ['vest', 'joggers', 20, 'formalityGap'], ['vest', 'shorts', 30, 'formalityGap'], ['vest', 'suit', 30, 'suitConflict'],
+  ['vest', 'tie', 92, 'classicCombo'], ['vest', 'oxfords', 90, 'classicCombo'], ['vest', 'blouse', 86, 'styleMatch'],
+  ['linenpants', 'shirt', 92, 'classicCombo'], ['linenpants', 'loafers', 94, 'classicCombo'], ['linenpants', 'sandals', 88, 'styleMatch'],
+  ['linenpants', 'tshirt', 86, 'styleMatch'], ['linenpants', 'polo', 88, 'styleMatch'], ['linenpants', 'henley', 86, 'styleMatch'],
+  ['linenpants', 'boots', 45, 'seasonClash'], ['linenpants', 'parka', 25, 'seasonClash'], ['linenpants', 'hoodie', 50, 'styleClash'],
+  ['henley', 'jeans', 94, 'classicCombo'], ['henley', 'chinos', 86, 'styleMatch'], ['henley', 'boots', 90, 'styleMatch'],
+  ['henley', 'leatherjacket', 92, 'classicCombo'], ['henley', 'suitpants', 45, 'formalityGap'],
+  ['ballerinas', 'dress', 92, 'classicCombo'], ['ballerinas', 'skirt', 94, 'classicCombo'], ['ballerinas', 'jeans', 88, 'styleMatch'],
+  ['ballerinas', 'suitpants', 82, 'styleMatch'], ['ballerinas', 'chinos', 86, 'styleMatch'], ['ballerinas', 'joggers', 30, 'styleClash'],
+  ['ballerinas', 'leggings', 60, 'smartCasual'],
 ];
 const RULES = new Map(RULE_LIST.map(([a, b, s, r]) => [pairKey(a, b), [s, r]]));
 
-const LAYER_INNER = ['shirt', 'blouse', 'tshirt', 'polo', 'tanktop', 'turtleneck'];
+const NECKWEAR = ['tie', 'bowtie'];
+const LAYER_INNER = ['shirt', 'henley', 'blouse', 'tshirt', 'polo', 'tanktop', 'turtleneck'];
 const LAYER_OUTER = ['sweater', 'hoodie'];
 
 export function itemPairScore(idA, idB) {
@@ -365,8 +393,9 @@ export function itemPairScore(idA, idB) {
   const cats = [A.category, B.category];
   const has = (c) => cats.includes(c);
 
-  // tie needs a dress shirt
-  if (ids.includes('tie') && has('top')) {
+  // tie / bow tie need a dress shirt
+  const neck = ids.find((i) => NECKWEAR.includes(i));
+  if (neck && has('top')) {
     const top = A.category === 'top' ? idA : idB;
     if (top === 'shirt') return { score: 95, reason: 'classicCombo' };
     if (top === 'blouse') return { score: 80, reason: 'classicCombo' };
@@ -411,12 +440,12 @@ export function itemPairScore(idA, idB) {
   return { score: s, reason };
 }
 
-export function itemMatches(itemId) {
+export function itemMatches(itemId, { gender } = {}) {
   const out = { great: [], good: [], avoid: [] };
   if (!ITEM_MAP.has(itemId)) return out;
   const rows = [];
   for (const it of ITEMS) {
-    if (it.id === itemId) continue;
+    if (it.id === itemId || !itemFitsGender(it, gender)) continue;
     const r = itemPairScore(itemId, it.id);
     if (r.reason === 'sameCategory') continue; // keep lists focused on real combos
     rows.push({ id: it.id, ...r });
@@ -506,8 +535,9 @@ export function scoreOutfit(pieces) {
   if (worstStyle && ['onePieceConflict', 'suitConflict', 'sameCategory', 'seasonClash'].includes(worstStyle.ip.reason) && worstStyle.ip.score < 45) {
     tips.push({ key: 'tip.itemConflict', params: { a: worstStyle.a.itemId, b: worstStyle.b.itemId } });
   }
-  if (ids.has('tie') && !ids.has('shirt') && !ids.has('blouse') && !ids.has('suit')) {
-    tips.push({ key: 'tip.needsShirt', params: { item: 'tie' } });
+  const neckId = NECKWEAR.find((n) => ids.has(n));
+  if (neckId && !ids.has('shirt') && !ids.has('blouse') && !ids.has('suit')) {
+    tips.push({ key: 'tip.needsShirt', params: { item: neckId } });
   }
   const top = list.find((p) => p.item.category === 'top'), bottom = list.find((p) => p.item.category === 'bottom');
   if (top && bottom && top.colorId && top.colorId === bottom.colorId && top.color && !top.color.neutral) {
@@ -546,9 +576,9 @@ function hashStr(s) {
 const NEUTRAL_IDS = COLORS.filter((c) => c.neutral).map((c) => c.id);
 const CHROMA_IDS = COLORS.filter((c) => !c.neutral).map((c) => c.id);
 
-export function suggestOutfit({ style, baseItemId, baseColorId, seed } = {}) {
+export function suggestOutfit({ style, baseItemId, baseColorId, seed, gender } = {}) {
   const seedNum = seed === undefined || seed === null
-    ? hashStr(`${style || ''}|${baseItemId || ''}|${baseColorId || ''}`)
+    ? hashStr(`${style || ''}|${baseItemId || ''}|${baseColorId || ''}|${gender || ''}`)
     : (typeof seed === 'number' ? seed : hashStr(String(seed)));
   const rnd = mulberry32(seedNum);
   const pick = (arr) => arr[Math.floor(rnd() * arr.length)];
@@ -556,7 +586,7 @@ export function suggestOutfit({ style, baseItemId, baseColorId, seed } = {}) {
   const styleOk = STYLES.includes(style) ? style : null;
 
   const pool = (cat) => {
-    const all = ITEMS.filter((i) => i.category === cat);
+    const all = ITEMS.filter((i) => i.category === cat && itemFitsGender(i, gender));
     if (!styleOk) return all;
     const f = all.filter((i) => i.styles.includes(styleOk));
     return f.length ? f : all;
@@ -578,7 +608,7 @@ export function suggestOutfit({ style, baseItemId, baseColorId, seed } = {}) {
     if (!chosen.shoes) chosen.shoes = pick(pool('shoes')).id;
     if (!chosen.outerwear && rnd() < 0.45) chosen.outerwear = pick(pool('outerwear')).id;
     if (!chosen.accessory && rnd() < 0.4) {
-      const acc = pool('accessory').filter((i) => i.id !== 'tie' || chosen.top === 'shirt' || chosen.top === 'blouse' || chosen.onepiece === 'suit');
+      const acc = pool('accessory').filter((i) => !NECKWEAR.includes(i.id) || chosen.top === 'shirt' || chosen.top === 'blouse' || chosen.onepiece === 'suit');
       if (acc.length) chosen.accessory = pick(acc).id;
     }
     const order = ['top', 'bottom', 'onepiece', 'outerwear', 'shoes', 'accessory'];
