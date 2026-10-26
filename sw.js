@@ -1,5 +1,5 @@
 // MatchMyFit service worker: precache app shell, runtime caching for same-origin GETs.
-const CACHE = 'mmf-v3';
+const CACHE = 'mmf-v4';
 const PRECACHE = [
   './',
   './index.html',
@@ -43,17 +43,14 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  if (req.mode === 'navigate') {
-    event.respondWith(networkFirstNavigation(req));
-  } else {
-    event.respondWith(staleWhileRevalidate(event, req));
-  }
+  // Network-first so online users always get the latest version; cache is the offline fallback
+  event.respondWith(req.mode === 'navigate' ? networkFirstNavigation(req) : networkFirst(req));
 });
 
 async function networkFirstNavigation(req) {
   const cache = await caches.open(CACHE);
   try {
-    const res = await fetch(req);
+    const res = await fetchWithTimeout(req, 4000);
     if (res && res.ok) cache.put(req, res.clone());
     return res;
   } catch (err) {
@@ -63,17 +60,22 @@ async function networkFirstNavigation(req) {
   }
 }
 
-async function staleWhileRevalidate(event, req) {
+async function networkFirst(req) {
   const cache = await caches.open(CACHE);
-  const cached = await cache.match(req);
-  const network = fetch(req)
-    .then((res) => {
-      if (res && res.ok) cache.put(req, res.clone());
-      return res;
-    })
-    .catch(() => null);
-  // Keep the worker alive until the background revalidation finishes.
-  event.waitUntil(network);
-  if (cached) return cached;
-  return (await network) || Response.error();
+  try {
+    const res = await fetchWithTimeout(req, 4000);
+    if (res && res.ok) cache.put(req, res.clone());
+    return res;
+  } catch (err) {
+    return (await cache.match(req, { ignoreSearch: true })) || Response.error();
+  }
+}
+
+// Slow networks fall back to the cache instead of hanging
+function fetchWithTimeout(req, ms) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('timeout')), ms);
+    // no-cache: revalidate with the server instead of using the browser's HTTP cache
+    fetch(req.mode === 'navigate' ? req.url : req, { cache: 'no-cache' }).then((res) => { clearTimeout(timer); resolve(res); }, (err) => { clearTimeout(timer); reject(err); });
+  });
 }

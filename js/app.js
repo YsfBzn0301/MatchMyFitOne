@@ -625,7 +625,17 @@ async function init() {
     });
     // lastRingScore is tracked in the ring itself
   } catch (e) { console.error(e); }
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+  if ('serviceWorker' in navigator) {
+    // Reload once when an updated service worker takes over, so new versions show up right away
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController || reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
+  }
   const wait = Math.max(0, (reduced.matches ? 500 : 1600) - performance.now());
   setTimeout(() => {
     document.body.classList.add('ready');
